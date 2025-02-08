@@ -1,0 +1,200 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
+  /* Puzzle Overlay Styles */
+  #puzzle-container {
+    text-align: center;
+  }
+  
+  /* Fixed 3×3 Grid */
+  #grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+  }
+  
+  .grid-item {
+    width: 100px;
+    height: 100px;
+    background: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .grid-item.active {
+    background: #6c6;
+  }
+  
+  /* Portfolio Container */
+  #portfolio-container {
+    padding: 20px;
+    max-width: 800px;
+    width: 95%;
+    margin: 0 auto;
+  }
+  
+  /* Header and Navigation */
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  nav a {
+    margin: 0 10px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Easter Egg Tracker */
+  #easter-egg-tracker {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 102;
+  }
+  
+  /* Footer */
+  footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #444;
+  }
+  
+  /* Zombie Easter Egg Overlay */
+  #easter-egg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 150;
+  }
+  
+  #easter-egg-content {
+    text-align: center;
+  }
+  
+  #zombie-image {
+    width: 150px;
+    height: auto;
+    animation: shake 0.5s infinite alternate;
+  }
+  
+  @keyframes shake {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(5deg);
+    }
+  }
+  
+  /* Custom Modal */
+  #custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 103;
+  }
+  
+  .modal-content {
+    background: #222;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  #modal-close {
+    padding: 5px 10px;
+    border: none;
+    background: #6c6;
+    color: #000;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  /* Canvas Mini-Game Overlay */
+  #mini-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 104;
+  }
+  
+  #mini-game-canvas {
+    background: #333;
+    border: 2px solid #6c6;
+  }
+  
+  #mini-game-close {
+    margin-top: 15px;
+    padding: 5px 10px;
+    border: none;
+    background: #6c6;
+    color: #000;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  /* Meme Overlay */
+  #meme-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+  
+  .meme-content {
+    text-align: center;
+  }
+  
+  .meme-content img {
+    width: 600px;
+    border-radius: 10px;
+  }
+  

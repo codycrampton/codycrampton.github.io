@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cody Crampton's Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Puzzle Overlay -->
+  <div id="puzzle-container">
+    <h1>Welcome to the Puzzle Portal</h1>
+    <p>Solve the puzzle to unlock the portfolio.</p>
+    <div id="grid-container">
+      <!-- Nine clickable circles -->
+      <div class="grid-item" data-index="1"></div>
+      <div class="grid-item" data-index="2"></div>
+      <div class="grid-item" data-index="3"></div>
+      <div class="grid-item" data-index="4"></div>
+      <div class="grid-item" data-index="5"></div>
+      <div class="grid-item" data-index="6"></div>
+      <div class="grid-item" data-index="7"></div>
+      <div class="grid-item" data-index="8"></div>
+      <div class="grid-item" data-index="9"></div>
+    </div>
+    <p id="puzzle-message"></p>
+  </div>
+
+  <!-- Main Portfolio Content (initially hidden) -->
+  <div id="portfolio-container" style="display: none;">
+    <header>
+      <h1 id="site-title">Cody Crampton</h1>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Easter Egg Tracker -->
+    <div id="easter-egg-tracker">
+      Easter Eggs Found: <span id="egg-count">0</span> - Keep looking for more secrets!
+    </div>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        Hi, I'm Cody Crampton – a creative developer passionate about puzzles, web design, and interactive experiences.
+        I love combining art and technology to craft unique digital experiences that surprise and engage.
+      </p>
+    </section>
+    <section id="projects">
+      <h2>Projects</h2>
+      <p>
+        Check out my work on GitHub:
+        <a href="https://github.com/codycrampton" target="_blank">https://github.com/codycrampton</a>
+      </p>
+    </section>
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Get in touch with me via GitHub:
+        <a href="https://github.com/codycrampton" target="_blank">https://github.com/codycrampton</a>
+      </p>
+    </section>
+    <footer id="footer">
+      <p>End of portfolio. Thanks for visiting!</p>
+    </footer>
+  </div>
+
+  <!-- Hidden Zombie Easter Egg Overlay (Triggered by Konami Code) -->
+  <div id="easter-egg" style="display: none;">
+    <div id="easter-egg-content">
+      <!-- Use the local zombie icon file -->
+      <img src="zombie-icon.svg" alt="Zombie" id="zombie-image" />
+      <p>Zombie mode activated!</p>
+    </div>
+  </div>
+
+  <!-- Custom Modal for Messages -->
+  <div id="custom-modal" style="display: none;">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <button id="modal-close">Close</button>
+    </div>
+  </div>
+
+  <!-- Canvas Mini-Game Overlay -->
+  <div id="mini-game-overlay" style="display: none;">
+    <canvas id="mini-game-canvas"></canvas>
+    <button id="mini-game-close">Close Game</button>
+  </div>
+
+  <!-- Meme Overlay (Triggered by clicking Projects heading) -->
+  <div id="meme-overlay" style="display: none;">
+    <div class="meme-content">
+      <!-- Use your local meme image file -->
+      <img src="meme.png" alt="Meme" />
+      <p>Keep coding, keep creating!</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
