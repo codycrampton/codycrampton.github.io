@@ -18,45 +18,14 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-  
-  /* Puzzle Overlay Styles */
-#puzzle-container {
-  text-align: center;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 40px 20px;
-  border-radius: 10px;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-}
-  
-  /* Fixed 3×3 Grid */
-  #grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-gap: 10px;
-    justify-content: center;
-    margin: 20px auto;
-  }
-  
 
-.grid-item {
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle at 30% 30%, #555, #222);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform 0.3s, background 0.3s;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-}
-
-.grid-item:hover {
-  transform: scale(1.1);
+/* Tagline */
+.tagline {
+  margin-top: -10px;
+  font-size: 1.2rem;
+  color: #ccc;
 }
   
-.grid-item.active {
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
-}
   
   /* Portfolio Container */
 #portfolio-container {
@@ -109,6 +78,33 @@ footer {
   padding: 20px 0;
   border-top: 1px solid #444;
   width: 100%;
+}
+
+/* Projects */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.project-card a {
+  color: var(--accent);
+  text-decoration: none;
 }
 
 h1, h2 {

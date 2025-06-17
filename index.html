@@ -13,29 +13,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Puzzle Overlay -->
-  <div id="puzzle-container">
-    <h1>Welcome to the Puzzle Portal</h1>
-    <p>Solve the puzzle to unlock the portfolio.</p>
-    <div id="grid-container">
-      <!-- Nine clickable circles -->
-      <div class="grid-item" data-index="1"></div>
-      <div class="grid-item" data-index="2"></div>
-      <div class="grid-item" data-index="3"></div>
-      <div class="grid-item" data-index="4"></div>
-      <div class="grid-item" data-index="5"></div>
-      <div class="grid-item" data-index="6"></div>
-      <div class="grid-item" data-index="7"></div>
-      <div class="grid-item" data-index="8"></div>
-      <div class="grid-item" data-index="9"></div>
-    </div>
-    <p id="puzzle-message"></p>
-  </div>
-
-  <!-- Main Portfolio Content (initially hidden) -->
-  <div id="portfolio-container" style="display: none;">
+  <!-- Portfolio -->
+  <div id="portfolio-container">
     <header>
       <h1 id="site-title">Cody Crampton</h1>
+      <p class="tagline">Creative Developer &amp; Puzzle Enthusiast</p>
       <nav>
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
@@ -57,10 +39,23 @@
     </section>
     <section id="projects">
       <h2>Projects</h2>
-      <p>
-        Check out my work on GitHub:
-        <a href="https://github.com/codycrampton" target="_blank">https://github.com/codycrampton</a>
-      </p>
+      <div class="project-grid">
+        <div class="project-card">
+          <h3>Puzzle Portal</h3>
+          <p>A playful website filled with secrets and mini‑games.</p>
+          <a href="https://github.com/codycrampton" target="_blank">View code</a>
+        </div>
+        <div class="project-card">
+          <h3>Web Experiments</h3>
+          <p>Collection of interactive front‑end prototypes.</p>
+          <a href="https://github.com/codycrampton" target="_blank">View code</a>
+        </div>
+        <div class="project-card">
+          <h3>Design Tools</h3>
+          <p>Utilities for streamlining creative workflows.</p>
+          <a href="https://github.com/codycrampton" target="_blank">View code</a>
+        </div>
+      </div>
     </section>
     <section id="contact">
       <h2>Contact</h2>

@@ -1,36 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    /* === PUZZLE LOGIC === */
-    const correctSequence = ["1", "3", "5", "7", "9"];
-    let userSequence = [];
-    const gridItems = document.querySelectorAll(".grid-item");
-    const puzzleMessage = document.getElementById("puzzle-message");
-    const puzzleContainer = document.getElementById("puzzle-container");
-    const portfolioContainer = document.getElementById("portfolio-container");
-  
-    gridItems.forEach((item) => {
-      item.addEventListener("click", function () {
-        const index = this.getAttribute("data-index");
-        if (this.classList.contains("active")) return;
-        this.classList.add("active");
-        userSequence.push(index);
-        if (userSequence.length === correctSequence.length) {
-          if (userSequence.join("") === correctSequence.join("")) {
-            puzzleMessage.textContent = "Puzzle solved! Welcome.";
-            setTimeout(() => {
-              puzzleContainer.style.display = "none";
-              portfolioContainer.style.display = "block";
-            }, 1000);
-          } else {
-            puzzleMessage.textContent = "Incorrect sequence. Try again.";
-            setTimeout(() => {
-              userSequence = [];
-              gridItems.forEach((item) => item.classList.remove("active"));
-              puzzleMessage.textContent = "";
-            }, 1000);
-          }
-        }
-      });
-    });
   
     /* === EASTER EGG TRACKER === */
     const discoveredEasterEggs = new Set();
@@ -44,6 +12,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       if (callback) callback();
     }
+
+    /* === SMOOTH SCROLL === */
+    document.querySelectorAll('nav a').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
   
     /* === KONAMI CODE (ZOMBIE MODE) === */
     const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
