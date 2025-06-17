@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.fill();
       ctx.closePath();
       ctx.fillStyle = "#fff";
-      ctx.font = "20px Arial";
+      ctx.font = "20px Poppins, Arial";
       ctx.fillText("Score: " + gameScore, 10, 30);
       requestAnimationFrame(drawMiniGame);
     }
