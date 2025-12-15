@@ -1,0 +1,26 @@
+{
+  "name": "codycrampton.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codycrampton/codycrampton.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/codycrampton/codycrampton.github.io/issues"
+  },
+  "homepage": "https://github.com/codycrampton/codycrampton.github.io#readme",
+  "devDependencies": {
+    "vite": "^7.2.7"
+  }
+}

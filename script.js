@@ -1,252 +1,206 @@
-document.addEventListener("DOMContentLoaded", function () {
-    /* === PUZZLE LOGIC === */
-    const correctSequence = ["1", "3", "5", "7", "9"];
-    let userSequence = [];
-    const gridItems = document.querySelectorAll(".grid-item");
-    const puzzleMessage = document.getElementById("puzzle-message");
-    const puzzleContainer = document.getElementById("puzzle-container");
-    const portfolioContainer = document.getElementById("portfolio-container");
-  
-    gridItems.forEach((item) => {
-      item.addEventListener("click", function () {
-        const index = this.getAttribute("data-index");
-        if (this.classList.contains("active")) return;
-        this.classList.add("active");
-        userSequence.push(index);
-        if (userSequence.length === correctSequence.length) {
-          if (userSequence.join("") === correctSequence.join("")) {
-            puzzleMessage.textContent = "Puzzle solved! Welcome.";
-            setTimeout(() => {
-              puzzleContainer.style.display = "none";
-              portfolioContainer.style.display = "block";
-            }, 1000);
-          } else {
-            puzzleMessage.textContent = "Incorrect sequence. Try again.";
-            setTimeout(() => {
-              userSequence = [];
-              gridItems.forEach((item) => item.classList.remove("active"));
-              puzzleMessage.textContent = "";
-            }, 1000);
-          }
-        }
-      });
-    });
-  
-    /* === EASTER EGG TRACKER === */
-    const discoveredEasterEggs = new Set();
-    function updateEasterEggTracker() {
-      document.getElementById("egg-count").textContent = discoveredEasterEggs.size;
-    }
-    function triggerEasterEgg(id, callback) {
-      if (!discoveredEasterEggs.has(id)) {
-        discoveredEasterEggs.add(id);
-        updateEasterEggTracker();
+/* Canvas Animation - Particle Network */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let width, height;
+let particles = [];
+
+function resize() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
+    this.size = Math.random() * 2 + 1;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.x < 0 || this.x > width) this.vx *= -1;
+    if (this.y < 0 || this.y > height) this.vy *= -1;
+  }
+
+  draw() {
+    ctx.fillStyle = 'rgba(0, 245, 212, 0.5)';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.min(width * 0.1, 100); // Responsive count
+  for (let i = 0; i < count; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, width, height);
+
+  particles.forEach((p, index) => {
+    p.update();
+    p.draw();
+
+    // Connect particles
+    for (let i = index + 1; i < particles.length; i++) {
+      const p2 = particles[i];
+      const dx = p.x - p2.x;
+      const dy = p.y - p2.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < 150) {
+        ctx.strokeStyle = `rgba(0, 245, 212, ${0.1 - dist / 1500})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
       }
-      if (callback) callback();
-    }
-  
-    /* === KONAMI CODE (ZOMBIE MODE) === */
-    const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-    let konamiIndex = 0;
-    document.addEventListener("keydown", function (e) {
-      if (e.keyCode === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-          triggerEasterEgg("zombie", function () {
-            const zombieOverlay = document.getElementById("easter-egg");
-            zombieOverlay.style.display = "flex";
-            setTimeout(function () {
-              zombieOverlay.style.display = "none";
-            }, 5000);
-          });
-          konamiIndex = 0;
-        }
-      } else {
-        konamiIndex = 0;
-      }
-    });
-  
-    /* === CUSTOM MODAL FOR MESSAGES === */
-    const customModal = document.getElementById("custom-modal");
-    const modalMessage = document.getElementById("modal-message");
-    const modalClose = document.getElementById("modal-close");
-    function showModal(message, duration = 3000) {
-      modalMessage.textContent = message;
-      customModal.style.display = "flex";
-      if (duration > 0) {
-        setTimeout(() => {
-          customModal.style.display = "none";
-        }, duration);
-      }
-    }
-    modalClose.addEventListener("click", function () {
-      customModal.style.display = "none";
-    });
-  
-    /* === TITLE CLICK EASTER EGG === */
-    const siteTitle = document.getElementById("site-title");
-    siteTitle.addEventListener("click", function () {
-      triggerEasterEgg("title", function () {
-        showModal("Secret of the Cramptons: A hidden history revealed!", 4000);
-      });
-    });
-  
-    /* === ABOUT SECTION HOVER / TOUCH EASTER EGG === */
-    let aboutTimer;
-    const aboutSection = document.getElementById("about");
-    aboutSection.addEventListener("mouseover", function () {
-      aboutTimer = setTimeout(function () {
-        triggerEasterEgg("about-hover", function () {
-          showModal("A mysterious whisper: 'Knowledge is power!'", 4000);
-        });
-      }, 3000);
-    });
-    aboutSection.addEventListener("mouseout", function () {
-      clearTimeout(aboutTimer);
-    });
-    aboutSection.addEventListener("touchstart", function () {
-      aboutTimer = setTimeout(function () {
-        triggerEasterEgg("about-hover-touch", function () {
-          showModal("A mysterious whisper: 'Knowledge is power!'", 4000);
-        });
-      }, 3000);
-    });
-    aboutSection.addEventListener("touchend", function () {
-      clearTimeout(aboutTimer);
-    });
-  
-    /* === PROJECTS HEADING CLICK (MEME EASTER EGG) === */
-    const projectsHeading = document.querySelector("#projects h2");
-    if (projectsHeading) {
-      projectsHeading.addEventListener("click", function () {
-        triggerEasterEgg("projects", function () {
-          const memeOverlay = document.getElementById("meme-overlay");
-          memeOverlay.style.display = "flex";
-          setTimeout(function () {
-            memeOverlay.style.display = "none";
-          }, 5000);
-        });
-      });
-    }
-  
-    /* === FOOTER SCROLL EASTER EGG === */
-    let footerTriggered = false;
-    window.addEventListener("scroll", function () {
-      const footer = document.getElementById("footer");
-      if (
-        !footerTriggered &&
-        footer &&
-        footer.getBoundingClientRect().top < window.innerHeight
-      ) {
-        footerTriggered = true;
-        triggerEasterEgg("footer", function () {
-          showModal("You've discovered the secret of the footer!", 4000);
-        });
-      }
-    });
-  
-    /* === KEYBOARD SEQUENCE: "easter" & "game" === */
-    let typedBuffer = "";
-    document.addEventListener("keydown", function (e) {
-      if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
-        typedBuffer += e.key.toLowerCase();
-        if (typedBuffer.endsWith("easter")) {
-          triggerEasterEgg("keyboard", function () {
-            showModal("The Easter incantation has been spoken!", 4000);
-          });
-          typedBuffer = "";
-        }
-        if (typedBuffer.endsWith("game")) {
-          triggerCanvasMiniGame();
-          triggerEasterEgg("canvas-mini", function () {});
-          typedBuffer = "";
-        }
-        if (typedBuffer.length > 20) {
-          typedBuffer = typedBuffer.slice(-20);
-        }
-      }
-    });
-  
-    /* === CANVAS MINI-GAME === */
-    const miniGameOverlay = document.getElementById("mini-game-overlay");
-    const miniGameCanvas = document.getElementById("mini-game-canvas");
-    const miniGameClose = document.getElementById("mini-game-close");
-    const ctx = miniGameCanvas.getContext("2d");
-  
-    function resizeCanvas() {
-      miniGameCanvas.width = window.innerWidth * 0.9;
-      miniGameCanvas.height = window.innerHeight * 0.7;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-  
-    let gameActive = false;
-    let gameScore = 0;
-    let circle = { x: 0, y: 0, radius: 30 };
-  
-    function repositionCircle() {
-      const padding = circle.radius + 10;
-      circle.x =
-        Math.random() * (miniGameCanvas.width - 2 * padding) + padding;
-      circle.y =
-        Math.random() * (miniGameCanvas.height - 2 * padding) + padding;
-    }
-  
-    function startMiniGame() {
-      gameActive = true;
-      gameScore = 0;
-      repositionCircle();
-      miniGameOverlay.style.display = "flex";
-      setTimeout(function () {
-        if (gameActive) {
-          endMiniGame();
-        }
-      }, 10000);
-      drawMiniGame();
-    }
-  
-    function endMiniGame() {
-      gameActive = false;
-      miniGameOverlay.style.display = "none";
-      showModal("Mini-Game Over! Your score: " + gameScore, 4000);
-    }
-  
-    function drawMiniGame() {
-      if (!gameActive) return;
-      ctx.clearRect(0, 0, miniGameCanvas.width, miniGameCanvas.height);
-      ctx.beginPath();
-      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
-      ctx.fillStyle = "#6c6";
-      ctx.fill();
-      ctx.closePath();
-      ctx.fillStyle = "#fff";
-      ctx.font = "20px Poppins, Arial";
-      ctx.fillText("Score: " + gameScore, 10, 30);
-      requestAnimationFrame(drawMiniGame);
-    }
-  
-    miniGameCanvas.addEventListener("click", function (e) {
-      if (!gameActive) return;
-      const rect = miniGameCanvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-      const distance = Math.sqrt(
-        (clickX - circle.x) ** 2 + (clickY - circle.y) ** 2
-      );
-      if (distance <= circle.radius) {
-        gameScore++;
-        repositionCircle();
-      }
-    });
-  
-    miniGameClose.addEventListener("click", function () {
-      if (gameActive) {
-        endMiniGame();
-      }
-    });
-  
-    function triggerCanvasMiniGame() {
-      startMiniGame();
     }
   });
-  
+
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => {
+  resize();
+  initParticles();
+});
+resize();
+initParticles();
+animate();
+
+/* Puzzle Logic */
+const unlockBtn = document.getElementById('unlock-btn');
+const puzzleWrapper = document.getElementById('puzzle-wrapper');
+const puzzleGrid = document.querySelector('.puzzle-grid');
+const puzzleStatus = document.getElementById('puzzle-status');
+const heroSection = document.getElementById('hero');
+const contentSections = document.querySelectorAll('.content-section');
+
+const SEQUENCE = ['1', '3', '5', '7', '9']; // Simpler sequence
+let userSequence = [];
+
+if (unlockBtn) {
+  unlockBtn.addEventListener('click', () => {
+    puzzleWrapper.classList.remove('hidden');
+    unlockBtn.style.display = 'none';
+    generateGrid();
+  });
+}
+
+function generateGrid() {
+  puzzleGrid.innerHTML = '';
+  for (let i = 1; i <= 9; i++) {
+    const item = document.createElement('div');
+    item.classList.add('grid-item');
+    item.dataset.index = i;
+    item.addEventListener('click', handleGridClick);
+    puzzleGrid.appendChild(item);
+  }
+}
+
+function handleGridClick(e) {
+  const item = e.target;
+  const index = item.dataset.index;
+
+  if (item.classList.contains('active')) return;
+
+  item.classList.add('active');
+  userSequence.push(index);
+
+  checkSequence();
+}
+
+function checkSequence() {
+  // Check match so far
+  const currentIndex = userSequence.length - 1;
+  if (userSequence[currentIndex] !== SEQUENCE[currentIndex]) {
+    // Wrong click
+    puzzleStatus.textContent = "Access Denied. Resetting...";
+    shakeGrid();
+    setTimeout(resetPuzzle, 1000);
+    return;
+  }
+
+  if (userSequence.length === SEQUENCE.length) {
+    puzzleStatus.textContent = "Access Granted.";
+    setTimeout(revealPortfolio, 800);
+  } else {
+    puzzleStatus.textContent = `Decrypting... ${Math.round((userSequence.length / SEQUENCE.length) * 100)}%`;
+  }
+}
+
+function resetPuzzle() {
+  userSequence = [];
+  document.querySelectorAll('.grid-item').forEach(el => el.classList.remove('active'));
+  puzzleStatus.textContent = "Decrypting...";
+}
+
+function shakeGrid() {
+  puzzleGrid.style.transform = "translateX(5px)";
+  setTimeout(() => puzzleGrid.style.transform = "translateX(-5px)", 50);
+  setTimeout(() => puzzleGrid.style.transform = "translateX(5px)", 100);
+  setTimeout(() => puzzleGrid.style.transform = "translateX(0)", 150);
+}
+
+function revealPortfolio() {
+  heroSection.style.display = 'none'; // Or animate out
+  // Actually, let's just push the hero up or hide it and show content
+  // For now, simple transition
+
+  contentSections.forEach((section, index) => {
+    section.classList.remove('hidden-section');
+    section.classList.add('revealed');
+    section.style.animationDelay = `${index * 0.2}s`;
+  });
+
+  // Also show nav links on mobile if we hid them? (kept simple for now)
+}
+
+/* Easter Eggs */
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+  // Konami
+  if (e.key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    if (konamiIndex === konamiCode.length) {
+      triggerEasterEgg("Zombie Mode Activated! (Imagine zombies here)");
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+
+function triggerEasterEgg(msg) {
+  const modal = document.getElementById('easter-egg-modal');
+  const content = document.getElementById('egg-content-area');
+  content.textContent = msg;
+  modal.classList.add('active');
+
+  document.querySelector('.close-modal').onclick = () => {
+    modal.classList.remove('active');
+  };
+
+  // Auto close
+  setTimeout(() => modal.classList.remove('active'), 3000);
+}
+
+// Title Click
+const title = document.querySelector('.glitch-text');
+if (title) {
+  title.addEventListener('click', () => {
+    triggerEasterEgg("System Status: Operational. Welcome, Traveller.");
+  });
+}
