@@ -2,6 +2,8 @@ const SITE_PASSWORD = "cody2026";
 const AUTH_KEY = "cc-site-access-granted";
 
 const body = document.body;
+const loginScreen = document.getElementById("login-screen");
+const siteShell = document.getElementById("site-shell");
 const loginForm = document.getElementById("login-form");
 const passwordInput = document.getElementById("site-password");
 const togglePasswordBtn = document.getElementById("toggle-password");
@@ -13,35 +15,45 @@ const revealSections = document.querySelectorAll(".reveal");
 const progressBar = document.getElementById("scroll-progress");
 const tiltCards = document.querySelectorAll(".tilt-card");
 
-function unlockSite({ saveSession = true } = {}) {
-  body.classList.add("site-unlocked");
-  if (saveSession) {
-    sessionStorage.setItem(AUTH_KEY, "1");
+function setAuthState(unlocked, { persist = false } = {}) {
+  body.classList.toggle("site-unlocked", unlocked);
+  body.classList.toggle("site-locked", !unlocked);
+
+  if (siteShell) {
+    siteShell.setAttribute("aria-hidden", unlocked ? "false" : "true");
+  }
+  if (loginScreen) {
+    loginScreen.setAttribute("aria-hidden", unlocked ? "true" : "false");
+  }
+
+  if (persist) {
+    if (unlocked) {
+      sessionStorage.setItem(AUTH_KEY, "1");
+    } else {
+      sessionStorage.removeItem(AUTH_KEY);
+    }
   }
 }
 
-function lockSite() {
-  body.classList.remove("site-unlocked");
-  sessionStorage.removeItem(AUTH_KEY);
+setAuthState(sessionStorage.getItem(AUTH_KEY) === "1");
+
+if (passwordInput && body.classList.contains("site-locked")) {
+  setTimeout(() => passwordInput.focus(), 80);
 }
 
-if (sessionStorage.getItem(AUTH_KEY) === "1") {
-  unlockSite({ saveSession: false });
-}
-
-if (loginForm) {
+if (loginForm && passwordInput) {
   loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const entered = passwordInput.value.trim();
+    const enteredPassword = passwordInput.value.trim();
 
-    if (entered === SITE_PASSWORD) {
+    if (enteredPassword === SITE_PASSWORD) {
       loginError.textContent = "";
-      unlockSite();
+      setAuthState(true, { persist: true });
       passwordInput.value = "";
       return;
     }
 
-    lockSite();
+    setAuthState(false, { persist: true });
     loginError.textContent = "Incorrect password. Please try again.";
     passwordInput.select();
   });
@@ -49,16 +61,16 @@ if (loginForm) {
 
 if (togglePasswordBtn && passwordInput) {
   togglePasswordBtn.addEventListener("click", () => {
-    const show = passwordInput.type === "password";
-    passwordInput.type = show ? "text" : "password";
-    togglePasswordBtn.textContent = show ? "Hide" : "Show";
+    const reveal = passwordInput.type === "password";
+    passwordInput.type = reveal ? "text" : "password";
+    togglePasswordBtn.textContent = reveal ? "Hide" : "Show";
   });
 }
 
 if (navToggleBtn && topNav) {
   navToggleBtn.addEventListener("click", () => {
-    const isOpen = topNav.classList.toggle("nav-open");
-    navToggleBtn.setAttribute("aria-expanded", String(isOpen));
+    const menuOpen = topNav.classList.toggle("nav-open");
+    navToggleBtn.setAttribute("aria-expanded", String(menuOpen));
   });
 
   navLinks.forEach((link) => {
@@ -69,41 +81,57 @@ if (navToggleBtn && topNav) {
   });
 }
 
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-      }
-    });
-  },
-  { threshold: 0.16 }
-);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && topNav?.classList.contains("nav-open")) {
+    topNav.classList.remove("nav-open");
+    navToggleBtn?.setAttribute("aria-expanded", "false");
+  }
+});
 
-revealSections.forEach((section) => sectionObserver.observe(section));
+if (revealSections.length > 0) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+        }
+      });
+    },
+    { threshold: 0.16 }
+  );
+
+  revealSections.forEach((section) => sectionObserver.observe(section));
+}
 
 const trackedSections = [...document.querySelectorAll("main section[id]")];
 
 function updateActiveNav() {
+  if (trackedSections.length === 0) {
+    return;
+  }
+
   const viewportProbe = window.scrollY + window.innerHeight * 0.35;
-  let currentSection = "hero";
+  let currentSectionId = trackedSections[0].id;
 
   trackedSections.forEach((section) => {
     if (viewportProbe >= section.offsetTop) {
-      currentSection = section.id;
+      currentSectionId = section.id;
     }
   });
 
   navLinks.forEach((link) => {
-    const active = link.dataset.section === currentSection;
+    const active = link.dataset.section === currentSectionId;
     link.classList.toggle("active", active);
   });
 }
 
 function updateScrollProgress() {
-  const scrollTop = window.scrollY;
+  if (!progressBar) {
+    return;
+  }
+
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const ratio = maxScroll > 0 ? scrollTop / maxScroll : 0;
+  const ratio = maxScroll > 0 ? window.scrollY / maxScroll : 0;
   progressBar.style.transform = `scaleX(${ratio})`;
 }
 
@@ -120,19 +148,18 @@ tiltCards.forEach((card) => {
     const bounds = card.getBoundingClientRect();
     const relX = (event.clientX - bounds.left) / bounds.width;
     const relY = (event.clientY - bounds.top) / bounds.height;
-    const rotateY = (relX - 0.5) * 8;
-    const rotateX = (0.5 - relY) * 8;
-    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    const rotateY = (relX - 0.5) * 7;
+    const rotateX = (0.5 - relY) * 7;
+    card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
 
   card.addEventListener("pointerleave", () => {
-    card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg)";
+    card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
   });
 });
 
 const canvas = document.getElementById("bg-canvas");
 const ctx = canvas ? canvas.getContext("2d") : null;
-
 let width = 0;
 let height = 0;
 let particles = [];
@@ -146,23 +173,23 @@ class Particle {
   reset() {
     this.x = Math.random() * width;
     this.y = height + Math.random() * height;
-    this.size = Math.random() * 2.2 + 0.8;
-    this.vx = (Math.random() - 0.5) * 0.2;
-    this.vy = -Math.random() * 0.55 - 0.2;
+    this.size = Math.random() * 2 + 0.7;
+    this.vx = (Math.random() - 0.5) * 0.18;
+    this.vy = -Math.random() * 0.5 - 0.18;
   }
 
   update() {
     this.x += this.vx;
     this.y += this.vy;
 
-    if (this.y < -10 || this.x < -20 || this.x > width + 20) {
+    if (this.y < -20 || this.x < -20 || this.x > width + 20) {
       this.reset();
-      this.y = height + Math.random() * 40;
+      this.y = height + Math.random() * 30;
     }
   }
 
   draw() {
-    ctx.fillStyle = "rgba(59, 227, 186, 0.45)";
+    ctx.fillStyle = "rgba(23, 231, 212, 0.45)";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
@@ -176,11 +203,12 @@ function resizeCanvas() {
 
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
-  const count = Math.min(120, Math.max(35, Math.floor(width / 14)));
-  particles = Array.from({ length: count }, () => new Particle());
+
+  const particleCount = Math.min(130, Math.max(40, Math.floor(width / 14)));
+  particles = Array.from({ length: particleCount }, () => new Particle());
 }
 
-function renderCanvas() {
+function animateCanvas() {
   if (!canvas || !ctx) {
     return;
   }
@@ -192,27 +220,27 @@ function renderCanvas() {
     particle.draw();
 
     for (let i = index + 1; i < particles.length; i += 1) {
-      const other = particles[i];
-      const dx = particle.x - other.x;
-      const dy = particle.y - other.y;
-      const dist = Math.hypot(dx, dy);
+      const peer = particles[i];
+      const dx = particle.x - peer.x;
+      const dy = particle.y - peer.y;
+      const distance = Math.hypot(dx, dy);
 
-      if (dist < 110) {
-        ctx.strokeStyle = `rgba(255, 209, 115, ${0.15 - dist / 850})`;
+      if (distance < 120) {
+        ctx.strokeStyle = `rgba(134, 251, 255, ${0.14 - distance / 900})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(particle.x, particle.y);
-        ctx.lineTo(other.x, other.y);
+        ctx.lineTo(peer.x, peer.y);
         ctx.stroke();
       }
     }
   });
 
-  requestAnimationFrame(renderCanvas);
+  requestAnimationFrame(animateCanvas);
 }
 
 if (canvas && ctx) {
   resizeCanvas();
-  renderCanvas();
+  animateCanvas();
   window.addEventListener("resize", resizeCanvas);
 }

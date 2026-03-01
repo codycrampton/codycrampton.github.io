@@ -10,32 +10,55 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=20260301" />
+  <style>
+    body:not(.site-unlocked) #site-shell {
+      display: none;
+    }
+
+    body.site-unlocked #login-screen {
+      display: none;
+    }
+  </style>
 </head>
 
-<body>
+<body class="site-locked">
   <canvas id="bg-canvas" aria-hidden="true"></canvas>
-  <div class="mesh-layer" aria-hidden="true"></div>
+  <div class="aurora-layer" aria-hidden="true"></div>
 
-  <div id="login-screen" class="login-screen">
-    <form id="login-form" class="login-card" autocomplete="off">
-      <p class="eyebrow">Private Access</p>
-      <h1>codycrampton.com</h1>
-      <p class="login-copy">Enter the password to access the portfolio.</p>
-      <label for="site-password">Password</label>
-      <div class="password-row">
-        <input id="site-password" name="password" type="password" required />
-        <button id="toggle-password" class="ghost-btn" type="button" aria-label="Toggle password visibility">Show</button>
-      </div>
-      <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
-      <button type="submit" class="primary-btn">Enter Site</button>
-    </form>
+  <div id="login-screen" class="login-screen" aria-hidden="false">
+    <div class="login-layout">
+      <section class="login-branding">
+        <div class="logo-badge">CC</div>
+        <p class="eyebrow">Secure Access Portal</p>
+        <h1 class="glitch-text" data-text="Cody Crampton">Cody Crampton</h1>
+        <p class="subtitle">Creative Developer &amp; Digital Architect</p>
+        <p class="login-copy">
+          Crafted interfaces, hardened systems, and high-performance web experiences.
+        </p>
+      </section>
+
+      <form id="login-form" class="login-card" autocomplete="off">
+        <h2>Enter Password</h2>
+        <p>Authentication required to view the private portfolio.</p>
+        <label for="site-password">Password</label>
+        <div class="password-row">
+          <input id="site-password" name="password" type="password" required />
+          <button id="toggle-password" class="ghost-btn" type="button" aria-label="Toggle password visibility">Show</button>
+        </div>
+        <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
+        <button type="submit" class="primary-btn">Unlock Experience</button>
+      </form>
+    </div>
   </div>
 
-  <div id="site-shell" class="site-shell">
+  <div id="site-shell" class="site-shell" aria-hidden="true">
     <header class="top-nav">
-      <a class="brand" href="#hero">Cody Crampton</a>
+      <a class="brand" href="#hero">
+        <span class="logo-badge mini">CC</span>
+        <span>Cody Crampton</span>
+      </a>
       <button id="nav-toggle" class="mobile-nav-btn" type="button" aria-expanded="false" aria-controls="main-nav">
         Menu
       </button>
@@ -52,7 +75,7 @@
       <section id="hero" class="panel hero-panel reveal">
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Creative Developer</p>
+            <p class="eyebrow">Creative Developer &amp; Digital Architect</p>
             <h1>Building resilient products with cinematic interfaces.</h1>
             <p>
               I design and ship secure web experiences that balance performance, storytelling, and practical outcomes.
@@ -136,11 +159,11 @@
     </main>
 
     <footer>
-      <p>&copy; 2026 Cody Crampton</p>
+      <p>&copy; 2026 Cody Crampton. Secure &amp; Sound.</p>
     </footer>
   </div>
 
-  <script type="module" src="script.js"></script>
+  <script type="module" src="script.js?v=20260301"></script>
 </body>
 
 </html>
