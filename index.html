@@ -4,97 +4,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cody Crampton | Creative Developer</title>
+  <title>Cody Crampton | Digital Product Builder</title>
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@700;900&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@500;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- Background Canvas for dynamic effects -->
-  <canvas id="bg-canvas"></canvas>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="mesh-layer" aria-hidden="true"></div>
 
-  <div class="app-container">
-    <nav class="glass-nav">
-      <div class="logo">CC</div>
-      <div class="nav-links">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#contact" class="nav-link">Contact</a>
+  <div id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card" autocomplete="off">
+      <p class="eyebrow">Private Access</p>
+      <h1>codycrampton.com</h1>
+      <p class="login-copy">Enter the password to access the portfolio.</p>
+      <label for="site-password">Password</label>
+      <div class="password-row">
+        <input id="site-password" name="password" type="password" required />
+        <button id="toggle-password" class="ghost-btn" type="button" aria-label="Toggle password visibility">Show</button>
       </div>
-    </nav>
+      <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
+      <button type="submit" class="primary-btn">Enter Site</button>
+    </form>
+  </div>
+
+  <div id="site-shell" class="site-shell">
+    <header class="top-nav">
+      <a class="brand" href="#hero">Cody Crampton</a>
+      <button id="nav-toggle" class="mobile-nav-btn" type="button" aria-expanded="false" aria-controls="main-nav">
+        Menu
+      </button>
+      <nav id="main-nav" class="nav-links" aria-label="Primary">
+        <a href="#hero" class="nav-link active" data-section="hero">Home</a>
+        <a href="#about" class="nav-link" data-section="about">About</a>
+        <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+        <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+      </nav>
+      <div id="scroll-progress"></div>
+    </header>
 
     <main>
-      <section id="hero" class="hero-section">
-        <div class="hero-content">
-          <h1 class="glitch-text" data-text="Cody Crampton">Cody Crampton</h1>
-          <p class="subtitle">Creative Developer & Digital Architect</p>
-          <div class="cta-container">
-            <button id="unlock-btn" class="primary-btn">Unlock Portfolio</button>
+      <section id="hero" class="panel hero-panel reveal">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Creative Developer</p>
+            <h1>Building resilient products with cinematic interfaces.</h1>
+            <p>
+              I design and ship secure web experiences that balance performance, storytelling, and practical outcomes.
+            </p>
+            <div class="hero-actions">
+              <a href="#projects" class="primary-btn">See Projects</a>
+              <a href="#contact" class="secondary-btn">Start a Conversation</a>
+            </div>
           </div>
-        </div>
-
-        <!-- Integrated Puzzle Overlay (initially hidden or integrated) -->
-        <div id="puzzle-wrapper" class="hidden">
-          <div class="puzzle-grid">
-            <!-- Grid items injected by JS -->
-          </div>
-          <p id="puzzle-status">Decrypting...</p>
+          <aside class="hero-meta glass-card tilt-card">
+            <p class="meta-title">Current Focus</p>
+            <ul>
+              <li>Interactive frontend systems</li>
+              <li>Security-aware architecture</li>
+              <li>Developer tooling and automation</li>
+            </ul>
+          </aside>
         </div>
       </section>
 
-      <section id="about" class="content-section hidden-section">
+      <section id="about" class="panel reveal">
         <div class="section-header">
-          <h2>About Me</h2>
+          <p class="eyebrow">About</p>
+          <h2>Products first, aesthetics second, both done well.</h2>
         </div>
-        <div class="glass-card">
-          <p>
-            I craft digital experiences that blend logic with creativity.
-            Specializing in secure, high-performance web infrastructure and immersive user interfaces.
-          </p>
+        <div class="about-grid">
+          <article class="glass-card tilt-card">
+            <h3>Engineering</h3>
+            <p>I prioritize maintainability, fast page loads, and clear component architecture.</p>
+          </article>
+          <article class="glass-card tilt-card">
+            <h3>Design</h3>
+            <p>Interfaces are treated like systems: spacing, typography, and motion reinforce intent.</p>
+          </article>
+          <article class="glass-card tilt-card">
+            <h3>Delivery</h3>
+            <p>I move from concept to production with careful QA and consistent iteration loops.</p>
+          </article>
         </div>
       </section>
 
-      <section id="projects" class="content-section hidden-section">
+      <section id="projects" class="panel reveal">
         <div class="section-header">
-          <h2>Selected Works</h2>
+          <p class="eyebrow">Selected Work</p>
+          <h2>Recent builds and experiments.</h2>
         </div>
         <div class="projects-grid">
-          <!-- Project Cards would go here -->
-          <div class="project-card">
+          <article class="project-card tilt-card">
+            <p class="project-tag">Open Source</p>
             <h3>GitHub Portfolio</h3>
-            <p>My open source contributions and experiments.</p>
-            <a href="https://github.com/codycrampton" target="_blank" class="card-link">View Code &rarr;</a>
-          </div>
+            <p>Codebases focused on practical automation, frontend exploration, and developer workflows.</p>
+            <a href="https://github.com/codycrampton" target="_blank" rel="noreferrer" class="card-link">View Repos</a>
+          </article>
+          <article class="project-card tilt-card">
+            <p class="project-tag">Web UX</p>
+            <h3>Immersive UI Systems</h3>
+            <p>Motion-led interfaces that keep navigation simple while adding personality and depth.</p>
+            <a href="#contact" class="card-link">Discuss a Build</a>
+          </article>
+          <article class="project-card tilt-card">
+            <p class="project-tag">Security</p>
+            <h3>Hardened Frontends</h3>
+            <p>CSP-aware, performance-tuned sites designed to stay both polished and defensible.</p>
+            <a href="#about" class="card-link">Read More</a>
+          </article>
         </div>
       </section>
 
-      <section id="contact" class="content-section hidden-section">
+      <section id="contact" class="panel reveal">
         <div class="section-header">
-          <h2>Connect</h2>
+          <p class="eyebrow">Contact</p>
+          <h2>Let’s build something deliberate.</h2>
         </div>
-        <div class="glass-card contact-card">
-          <p>Reach out via GitHub for collaborations.</p>
-          <a href="https://github.com/codycrampton" class="secondary-btn">GitHub Profile</a>
+        <div class="glass-card contact-card tilt-card">
+          <p>
+            For collaborations, product builds, or frontend architecture support, reach out directly on GitHub.
+          </p>
+          <a href="https://github.com/codycrampton" target="_blank" rel="noreferrer" class="primary-btn">GitHub Profile</a>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2024 Cody Crampton. Secure & Sound.</p>
+      <p>&copy; 2026 Cody Crampton</p>
     </footer>
-  </div>
-
-  <!-- Hidden Easter Egg Elements -->
-  <div id="easter-egg-modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <div id="egg-content-area"></div>
-    </div>
   </div>
 
   <script type="module" src="script.js"></script>
